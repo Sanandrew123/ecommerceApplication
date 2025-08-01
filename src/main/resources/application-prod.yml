@@ -1,0 +1,107 @@
+# 文件级分析：
+# - 职责：生产环境特定配置，注重安全性、性能和稳定性
+# - 位置考虑：resources目录下，与其他配置文件统一管理
+# - 命名原因：Spring Boot profile命名约定，production环境缩写为prod
+# - 调用关系：当spring.profiles.active=prod时被自动加载
+#
+# 设计思路：
+# 1. 优先考虑安全性，隐藏敏感信息，关闭调试功能
+# 2. 优化性能配置，如连接池、缓存策略等
+# 3. 完善监控和日志，便于线上问题排查
+# 4. 使用环境变量替代硬编码，提高配置灵活性
+
+# 服务器配置 - 生产环境
+server:
+  port: ${SERVER_PORT:8080}
+  
+# 数据源配置 - 生产环境（使用环境变量）
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/ecommerce_prod?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai}
+    username: ${DB_USERNAME:ecommerce_user}
+    password: ${DB_PASSWORD:your_secure_password}
+    
+    # 生产环境连接池优化
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      leak-detection-threshold: 60000  # 连接泄露检测
+    
+  # JPA配置 - 生产环境
+  jpa:
+    hibernate:
+      ddl-auto: validate  # 生产环境只验证表结构，不自动修改
+    show-sql: false       # 关闭SQL日志，提高性能
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        jdbc:
+          batch_size: 50  # 批量操作优化
+          fetch_size: 50
+    
+  # Redis配置 - 生产环境
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DB:0}
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          
+  # 缓存配置 - 生产环境
+  cache:
+    redis:
+      time-to-live: 7200000  # 2小时缓存
+
+# 日志配置 - 生产环境
+logging:
+  level:
+    root: WARN
+    com.ecommerce: INFO
+    org.springframework.security: WARN
+  file:
+    name: /var/log/ecommerce/ecommerce-prod.log
+    max-size: 50MB
+    max-history: 60  # 保留60天日志
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
+
+# 监控配置 - 生产环境
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus  # 只暴露必要的端点
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized  # 只对授权用户显示详细信息
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# 应用自定义配置 - 生产环境
+app:
+  # JWT配置 - 生产环境
+  jwt:
+    secret: ${JWT_SECRET:your-very-long-and-secure-jwt-secret-key-for-production}
+    expiration: ${JWT_EXPIRATION:86400000}  # 24小时
+    
+  # 文件存储配置
+  file:
+    upload-path: ${FILE_UPLOAD_PATH:/data/uploads/}
+    
+  # 生产环境特定配置
+  prod:
+    enable-ssl: true
+    rate-limit-enabled: true  # 启用接口限流
+    request-log-enabled: false  # 关闭请求日志，提高性能
