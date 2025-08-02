@@ -59,6 +59,38 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // ======================== 基础查询方法 ========================
     
     /**
+     * 根据ID查找用户（排除已删除）
+     * 
+     * @param id 用户ID
+     * @return 用户实体，如果不存在则返回空
+     */
+    Optional<User> findByIdAndDeletedFalse(Long id);
+    
+    /**
+     * 检查用户名是否存在（排除已删除）
+     * 
+     * @param username 用户名
+     * @return 是否存在
+     */
+    boolean existsByUsernameAndDeletedFalse(String username);
+    
+    /**
+     * 检查邮箱是否存在（排除已删除）
+     * 
+     * @param email 邮箱
+     * @return 是否存在
+     */
+    boolean existsByEmailAndDeletedFalse(String email);
+    
+    /**
+     * 检查手机号是否存在（排除已删除）
+     * 
+     * @param phone 手机号
+     * @return 是否存在
+     */
+    boolean existsByPhoneAndDeletedFalse(String phone);
+    
+    /**
      * 根据用户名查找用户（排除已删除）
      * 
      * @param username 用户名
@@ -72,7 +104,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param username 用户名
      * @return 用户实体，如果不存在则返回空
      */
-    default Optional<User> findByUsername(String username) {
+    default Optional<User> findByUsernameAndDeletedFalse(String username) {
         return findByUsernameAndDeleted(username, 0);
     }
     
@@ -90,7 +122,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param email 邮箱地址
      * @return 用户实体，如果不存在则返回空
      */
-    default Optional<User> findByEmail(String email) {
+    default Optional<User> findByEmailAndDeletedFalse(String email) {
         return findByEmailAndDeleted(email, 0);
     }
     
@@ -108,7 +140,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param phone 手机号码
      * @return 用户实体，如果不存在则返回空
      */
-    default Optional<User> findByPhone(String phone) {
+    default Optional<User> findByPhoneAndDeletedFalse(String phone) {
         return findByPhoneAndDeleted(phone, 0);
     }
     

@@ -155,13 +155,6 @@ public class User extends BaseEntity implements UserDetails {
     // ======================== 扩展信息字段 ========================
     
     /**
-     * 头像URL
-     * 存储用户头像的访问地址
-     */
-    @Column(name = "avatar_url")
-    private String avatarUrl;
-    
-    /**
      * 性别
      * 0-未知，1-男，2-女
      */
@@ -202,8 +195,57 @@ public class User extends BaseEntity implements UserDetails {
      * 登录失败次数
      * 用于账户安全策略，达到一定次数后锁定账户
      */
-    @Column(name = "login_failure_count", nullable = false)
-    private Integer loginFailureCount = 0;
+    @Column(name = "failed_login_attempts", nullable = false)
+    private Integer failedLoginAttempts = 0;
+    
+    /**
+     * 最后失败登录时间
+     * 用于安全审计和异常登录检测
+     */
+    @Column(name = "last_failed_login_at")
+    private LocalDateTime lastFailedLoginAt;
+    
+    /**
+     * 登录次数
+     * 统计用户总登录次数
+     */
+    @Column(name = "login_count", nullable = false)
+    private Integer loginCount = 0;
+    
+    /**
+     * 是否首次登录
+     * 标识用户是否为首次登录
+     */
+    @Column(name = "first_login", nullable = false)
+    private Boolean firstLogin = true;
+    
+    /**
+     * 是否需要修改密码
+     * 管理员重置密码后，用户需要修改密码
+     */
+    @Column(name = "need_change_password", nullable = false)
+    private Boolean needChangePassword = false;
+    
+    /**
+     * 密码修改时间
+     * 记录最后一次修改密码的时间
+     */
+    @Column(name = "password_changed_at")
+    private LocalDateTime passwordChangedAt;
+    
+    /**
+     * 注册时间
+     * 用户注册的时间
+     */
+    @Column(name = "registered_at")
+    private LocalDateTime registeredAt;
+    
+    /**
+     * 头像URL（修改字段名以匹配使用）
+     * 存储用户头像的访问地址
+     */
+    @Column(name = "avatar")
+    private String avatar;
     
     /**
      * 账户锁定时间
@@ -306,7 +348,7 @@ public class User extends BaseEntity implements UserDetails {
     public void updateLastLogin(String loginIp) {
         this.lastLoginAt = LocalDateTime.now();
         this.lastLoginIp = loginIp;
-        this.loginFailureCount = 0; // 登录成功后重置失败次数
+        this.failedLoginAttempts = 0; // 登录成功后重置失败次数
     }
     
     /**
@@ -315,8 +357,8 @@ public class User extends BaseEntity implements UserDetails {
      * @return 当前失败次数
      */
     public int incrementLoginFailureCount() {
-        this.loginFailureCount = this.loginFailureCount == null ? 1 : this.loginFailureCount + 1;
-        return this.loginFailureCount;
+        this.failedLoginAttempts = this.failedLoginAttempts == null ? 1 : this.failedLoginAttempts + 1;
+        return this.failedLoginAttempts;
     }
     
     /**
@@ -336,7 +378,7 @@ public class User extends BaseEntity implements UserDetails {
         if (this.status == UserStatus.LOCKED) {
             this.status = UserStatus.ACTIVE;
             this.lockedUntil = null;
-            this.loginFailureCount = 0;
+            this.failedLoginAttempts = 0;
         }
     }
     

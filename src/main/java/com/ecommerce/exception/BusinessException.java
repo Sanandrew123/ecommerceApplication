@@ -167,4 +167,54 @@ public class BusinessException extends RuntimeException {
     public static BusinessException dataConflict(String message) {
         return new BusinessException(CommonConstants.BUSINESS_ERROR_CODE, message);
     }
+    
+    /**
+     * 请求参数错误异常
+     * 
+     * @param message 错误描述
+     * @return BusinessException实例
+     */
+    public static BusinessException badRequest(String message) {
+        return new BusinessException(400, message);
+    }
+    
+    /**
+     * 未授权异常
+     * 
+     * @param message 错误描述
+     * @return BusinessException实例
+     */
+    public static BusinessException unauthorized(String message) {
+        return new BusinessException(401, message);
+    }
+    
+    /**
+     * 禁止访问异常
+     * 
+     * @param message 错误描述
+     * @return BusinessException实例
+     */
+    public static BusinessException forbidden(String message) {
+        return new BusinessException(403, message);
+    }
+    
+    /**
+     * 资源未找到异常
+     * 
+     * @param message 错误描述
+     * @return BusinessException实例
+     */
+    public static BusinessException notFound(String message) {
+        return new BusinessException(404, message);
+    }
+    
+    /**
+     * 冲突异常
+     * 
+     * @param message 错误描述
+     * @return BusinessException实例
+     */
+    public static BusinessException conflict(String message) {
+        return new BusinessException(409, message);
+    }
 }

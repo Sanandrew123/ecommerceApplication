@@ -266,7 +266,7 @@ public enum PaymentMethod {
             return BigDecimal.ZERO;
         }
         
-        return amount.multiply(this.feeRate).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return amount.multiply(this.feeRate).setScale(2, java.math.RoundingMode.HALF_UP);
     }
     
     /**
