@@ -43,10 +43,10 @@ com.ecommerce
 ### 3. 用户模块 (User Module)
 | 序号 | 文件路径 | 文件名 | 状态 | 开发重点 | 说明 |
 |------|----------|--------|------|----------|------|
-| 8 | entity/ | User.java | ⏳ 待开发 | JPA注解、字段验证 | 用户实体类 |
-| 9 | dto/request/user/ | UserRegisterRequest.java | ⏳ 待开发 | 参数校验注解 | 用户注册请求DTO |
-| 10 | dto/request/user/ | UserLoginRequest.java | ⏳ 待开发 | 登录参数验证 | 用户登录请求DTO |
-| 11 | dto/response/user/ | UserInfoResponse.java | ⏳ 待开发 | 敏感信息过滤 | 用户信息响应DTO |
+| 8 | entity/ | User.java | ✅ 已完成 | JPA注解、字段验证 | 用户实体类 |
+| 9 | dto/request/user/ | UserRegisterRequest.java | ✅ 已完成 | 参数校验注解 | 用户注册请求DTO |
+| 10 | dto/request/user/ | UserLoginRequest.java | ✅ 已完成 | 登录参数验证 | 用户登录请求DTO |
+| 11 | dto/response/user/ | UserInfoResponse.java | ✅ 已完成 | 敏感信息过滤 | 用户信息响应DTO |
 | 12 | repository/jpa/ | UserRepository.java | ⏳ 待开发 | 自定义查询方法 | 用户数据访问接口 |
 | 13 | service/ | UserService.java | ⏳ 待开发 | 业务逻辑接口定义 | 用户服务接口 |
 | 14 | service/impl/ | UserServiceImpl.java | ⏳ 待开发 | 注册登录逻辑 | 用户服务实现类 |
