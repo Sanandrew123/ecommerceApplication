@@ -70,9 +70,9 @@ com.ecommerce
 | 24 | entity/ | Order.java | ✅ 已完成 | 订单状态管理 | 订单实体类 |
 | 25 | entity/ | OrderItem.java | ✅ 已完成 | 订单明细设计 | 订单项实体类 |
 | 26 | dto/request/order/ | OrderCreateRequest.java | ✅ 已完成 | 下单参数验证 | 订单创建请求DTO |
-| 27 | service/ | OrderService.java | ⏳ 待开发 | 订单业务流程 | 订单服务接口 |
-| 28 | service/impl/ | OrderServiceImpl.java | ⏳ 待开发 | 下单逻辑、库存扣减 | 订单服务实现类 |
-| 29 | controller/api/ | OrderController.java | ⏳ 待开发 | 订单API设计 | 订单控制器 |
+| 27 | service/ | OrderService.java | ✅ 已完成 | 订单业务流程 | 订单服务接口 |
+| 28 | service/impl/ | OrderServiceImpl.java | ✅ 已完成 | 下单逻辑、库存扣减 | 订单服务实现类 |
+| 29 | controller/api/ | OrderController.java | ✅ 已完成 | 订单API设计 | 订单控制器 |
 
 ---
 
